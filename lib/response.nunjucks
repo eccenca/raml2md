@@ -1,0 +1,36 @@
+{# responses #}
+* **responses**:
+{% for key, response in method.responses %}
+    * HTTPCode: [{{key}}](http://httpstatus.es/{{ key }}):
+  {% if response.headers %}
+    {% for key, item in response.headers %}
+    {% include "./item.nunjucks" %}
+    {% endfor %}
+  {% endif %}
+
+  {% if response.body %}
+    {% for key, b in response.body %}
+        * **{{key}} **:
+      {% if b.formParameters %}
+              * form parameters:
+        {% for key, item in b.formParameters %}
+          {% include "./item.nunjucks" %}
+        {% endfor %}
+      {% endif %}
+
+      {% if b.schema %}
+              * schema:
+              ```
+              {{ b.schema | escape }}
+              ```
+      {% endif %}
+      {% if b.example %}
+              * example :
+
+                  ```json
+                  {{ b.example }}
+                  ```
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}

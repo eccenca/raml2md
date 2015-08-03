@@ -2,10 +2,42 @@
 ### {{ resource.parentUrl }}{{ resource.relativeUri }}
 {% if resource.parentUrl %}{{ resource.description }}{% endif %}
 {% for method in resource.methods %}
-* **{{ method.method}}**{% if method.securedBy %} *(secured)*{% endif %}: {{ method.description }}
+#### {{ method.method}}{% if method.securedBy %} *(secured)*{% endif %}:
+{{ method.description }}
+
+{#{% if method.allUriParameters.length %}
+* **allUriParameters**:
+{% for item in method.allUriParameters %}
+{% include "./item_2.nunjucks" %}
+{% endfor %}
+{% endif %}
+#}
+
+{% if method.headers %}
+* **headers**:
+{% for key, item in method.headers %}
+{% include "./item_2.nunjucks" %}
+{% endfor %}
+{% endif %}
+
+{% if method.queryParameters %}
+* **queryParameters**:
+{% for key, item in method.queryParameters %}
+{% include "./item_2.nunjucks" %}
+{% endfor %}
+{% endif %}
+
+{% if method.body %}
+{% include "./body.nunjucks"%}
+{% endif %}
+
+{% if method.responses %}
+{% include "./response.nunjucks"%}
+{% endif %}
+
 {%- endfor -%}
 {% endif %}
 
 {% for resource in resource.resources %}
-{% include "resource.nunjucks" %}
+{% include "./resource.nunjucks" %}
 {% endfor %}
